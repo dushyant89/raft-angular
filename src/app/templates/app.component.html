@@ -1,0 +1,32 @@
+<div class="container">
+	<form class="space-top-md form-inline">
+		<div class="form-group">
+			<label for="noOfServers">No. of servers you want to initialize</label>
+			<input placeholder="3"
+				name="noOfServers"
+				id="noOfServers"
+				class="form-control"
+				[(ngModel)]="noOfServers"
+				type="text">
+		</div>
+		<button class="btn btn-primary btn-sm" (click)="createServers();"> Create instances </button>
+	</form>
+	<form *ngIf="allowUserEntries" class="space-top-md form-inline">
+		<div class="form-group">
+			<label for="userEntry">The entry to store</label>
+			<input [(ngModel)]="userEntry" name="userEntry" id="userEntry" class="form-control" type="text">
+		</div>
+		<button (click)="sendEntriesToServers();" class="btn btn-primary btn-sm">
+			<span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+			&nbsp;Send
+		</button>
+	</form>
+	<div id="serverRow">
+		<raft-server *ngFor="let server of servers"
+			(onLeaderElected)="onLeaderElected($event);"
+			class="space-left-xs"
+			[noOfServers] = "noOfServers"
+			[server]="server">
+		</raft-server>
+	</div>
+</div>

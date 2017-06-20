@@ -1,0 +1,18 @@
+.status-message-container {
+	background-color: #212121;
+	max-height: 300px;
+	overflow-y: scroll;
+}
+
+.status-message-container > ul {
+	padding-left: 0;
+}
+
+.status-message {
+	color: #66bb6a;
+	font-family: courier;
+}
+
+li.status-message {
+	list-style: none;
+}
