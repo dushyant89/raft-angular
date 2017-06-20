@@ -1,0 +1,10 @@
+# compiled javascript files
+*.js
+*.js.map
+!*.config*.js
+
+# node modules
+node_modules
+
+# for mac os
+.DS_Store
