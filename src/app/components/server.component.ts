@@ -96,8 +96,8 @@ export class ServerComponent implements OnInit {
             this.server.currentTerm = entry.term;
             // These values need to be reset for avoiding confusions
             // during elections.
-                this.server.votedFor = -1;
-                this.noOfVotes = 0;
+            this.server.votedFor = -1;
+            this.noOfVotes = 0;
             this.heartbeatLastReceived = Date.now();
             if (!entry.isHeartBeat) {
                 // Update your log with the latest data from server.
