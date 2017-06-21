@@ -2,6 +2,7 @@
 *.js
 *.js.map
 !*.config*.js
+!systemjs-angular-loader.js
 
 # node modules
 node_modules

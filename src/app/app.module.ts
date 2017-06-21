@@ -8,9 +8,9 @@ import { AppendEntriesService } from './services/append-entries.service';
 import { SendEntriesService } from './services/send-entries.service';
 
 @NgModule({
-	imports:	[ BrowserModule, FormsModule ],
-	declarations:	[ AppComponent, ServerComponent ],
-	bootstrap:	[ AppComponent ],
-	providers:	[ LeaderElectionService, AppendEntriesService, SendEntriesService ]
+    imports:    [ BrowserModule, FormsModule ],
+    declarations:   [ AppComponent, ServerComponent ],
+    bootstrap:  [ AppComponent ],
+    providers:  [ LeaderElectionService, AppendEntriesService, SendEntriesService ]
 })
 export class AppModule {}

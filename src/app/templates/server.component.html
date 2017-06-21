@@ -1,61 +1,61 @@
 <div [ngClass]="{'panel-success': server.leader, 'panel-info': !server.leader}" class="panel">
-	<div class="panel-heading">
-		<span class="text-info panel-title"> Server id : {{ server.id }}</span>
-		<a href="#" class="pull-right" (click)="enableLogging = !enableLogging"> Enable Logging </a>
-	</div>
-	<div class="panel-body">
-		<div class="row">
-			<!-- Server configuration table -->
-			<div class="col-xs-5">
-				<table class="table">
-					<tr> 
-						<td>
-							<b>ID</b>
-						</td>
-						<td>
-							{{ server.id }}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<b>Status</b>
-						</td>
-						<td *ngIf="server.leader">
-							Leader
-						</td>
-						<td *ngIf="server.follower">
-							Follower
-						</td>
-						<td *ngIf="server.candidate">
-							Candidate
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<b>Current Term</b>
-						</td>		
-						<td>
-							{{ server.currentTerm }}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<b>Election Timeout</b>
-						</td>
-						<td>
-							{{ server.electionTimeout }}
-						</td>
-					</tr>
-				</table>
-			</div>
-			<div *ngIf="messageLogs.length" class="col-xs-7 status-message-container">
-				<!-- Server status messages -->
-				<ul>
-					<li class="status-message" *ngFor="let log of messageLogs">
-						{{ log }}
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
+    <div class="panel-heading">
+        <span class="text-info panel-title"> Server id : {{ server.id }}</span>
+        <a href="#" class="pull-right" (click)="enableLogging = !enableLogging"> Enable Logging </a>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <!-- Server configuration table -->
+            <div class="col-xs-5">
+                <table class="table">
+                    <tr> 
+                        <td>
+                            <b>ID</b>
+                        </td>
+                        <td>
+                            {{ server.id }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Status</b>
+                        </td>
+                        <td *ngIf="server.leader">
+                            Leader
+                        </td>
+                        <td *ngIf="server.follower">
+                            Follower
+                        </td>
+                        <td *ngIf="server.candidate">
+                            Candidate
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Current Term</b>
+                        </td>       
+                        <td>
+                            {{ server.currentTerm }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Election Timeout</b>
+                        </td>
+                        <td>
+                            {{ server.electionTimeout }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div *ngIf="messageLogs.length" class="col-xs-7 status-message-container">
+                <!-- Server status messages -->
+                <ul>
+                    <li class="status-message" *ngFor="let log of messageLogs">
+                        {{ log }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
