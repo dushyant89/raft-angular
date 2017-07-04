@@ -27,6 +27,7 @@ export class ServerComponent implements OnInit {
     private noOfVotes: number = 0;
     private heartbeatLastReceived: number = 0;
     private enableLogging: boolean = true;
+    private appendEntriesTimer: number;
 
     /**
         When the component is initialized start the timer.
@@ -102,7 +103,7 @@ export class ServerComponent implements OnInit {
             if (!entry.isHeartBeat) {
                 // Update your log with the latest data from server.
                 this.logs.push(entry.logEntry);
-                this.logMessages("Got this from the server: " + entry.logEntry.data);
+                this.logMessages("Got this from the leader: " + entry.logEntry.data);
             }
         }
     }
@@ -117,6 +118,11 @@ export class ServerComponent implements OnInit {
             voteRequestResponse.voteGranted = this.isVoteRequestEligible(request);
             if (voteRequestResponse.voteGranted) {
                 this.server.votedFor = request.candidateId;
+                // If you are not a follower then you should become one since you
+                // just granted a vote to the requestor.
+                if (!this.server.follower) {
+                    this.convertToFollower();
+                }
             }
             voteRequestResponse.term = this.server.currentTerm;
             voteRequestResponse.forCandidate = request.candidateId;
@@ -155,16 +161,18 @@ export class ServerComponent implements OnInit {
         immediately.
     */
     private startLeadership(): void {
-        //first convert to a leader.
+        // First convert to a leader.
         this.server.leader = true;
         this.server.candidate = false;
-        // reset the no. of votes.
+        // Increment the current term
+        this.server.currentTerm++;
+        // Reset the no. of votes.
         this.noOfVotes = 0;
         // Start sending heartbeats to followers immediately.
         this.appendEntriesService.sendEntry(this.appendEntryRequest(undefined));
         // Set the timer also.
         this.setAppendEntryTimer();
-        // let the parent component know of this.
+        // Let the parent component know of this.
         this.onLeaderElected.emit(true);
         // Logging it finally.
         this.logMessages("I just became the leader");
@@ -175,11 +183,15 @@ export class ServerComponent implements OnInit {
         to avoid any elections or partitions. 
     */
     private setAppendEntryTimer(): void {
-        setInterval(
+        this.appendEntriesTimer = setInterval(
             this.appendEntriesService.sendEntry.bind(this.appendEntriesService),
             this.server.appendEntryTimeout,
             this.appendEntryRequest(undefined)
         );
+    }
+
+    private clearAppendEntriesTimer() {
+        clearInterval(this.appendEntriesTimer);
     }
 
     private isVoteRequestEligible(request: VoteRequest): boolean {
@@ -187,7 +199,7 @@ export class ServerComponent implements OnInit {
             the server to vote has to be a follower and shouldn't
             have voted for someone else in the same voting session.
         */
-        if (!this.server.follower && -1 != this.server.votedFor) {
+        if (-1 != this.server.votedFor) {
             return false;
         }
         /**
@@ -240,7 +252,7 @@ export class ServerComponent implements OnInit {
             so if the difference is greater than the hearbeat time then
             this server did not receive any heartbeat.
         */
-        if ((dateNow - this.heartbeatLastReceived) > this.heartbeatLastReceived) {
+        if ((dateNow - this.heartbeatLastReceived) > (this.server.appendEntryTimeout + 100)) {
             return true;
         }
 
@@ -252,6 +264,11 @@ export class ServerComponent implements OnInit {
         this.server.candidate = true;
         // vote for yourself also.
         this.noOfVotes++;
+    }
+
+    private convertToFollower(): void {
+        this.server.leader = this.server.candidate = false;
+        this.server.follower = true;
     }
 
     /**

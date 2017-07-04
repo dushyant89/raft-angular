@@ -1,7 +1,14 @@
 <div [ngClass]="{'panel-success': server.leader, 'panel-info': !server.leader}" class="panel">
     <div class="panel-heading">
-        <span class="text-info panel-title"> Server id : {{ server.id }}</span>
-        <a href="#" class="pull-right" (click)="enableLogging = !enableLogging"> Enable Logging </a>
+        <ul class="nav nav-pills">
+            <li>
+                <a href="#" *ngIf="!enableLogging" (click)="enableLogging = !enableLogging"> Enable Logging </a>
+                <a href="#" *ngIf="enableLogging" (click)="enableLogging = !enableLogging"> Disable Logging </a>
+            </li>
+            <li>
+                <a href="#" *ngIf="server.leader" (click)="clearAppendEntriesTimer();"> Halt Server </a>
+            </li>
+        </ul>
     </div>
     <div class="panel-body">
         <div class="row">
