@@ -1,4 +1,9 @@
-<div [ngClass]="{'panel-success': server.leader, 'panel-info': !server.leader}" class="panel">
+<div [ngClass]="{
+        'panel-success': server.leader,
+        'panel-danger': server.follower,
+        'panel-warning': server.candidate
+    }"
+    class="panel">
     <div class="panel-heading">
         <ul class="nav nav-pills">
             <li>
